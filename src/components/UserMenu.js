@@ -1,47 +1,64 @@
-// UserMenu.js
-import React from 'react';
+import React, { useContext } from "react";
 import {
+  Divider,
   Drawer,
   List,
   ListItem,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-} from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import HistoryIcon from '@mui/icons-material/History';
-import { useNavigate } from 'react-router-dom';
-
+} from "@mui/material";
+import HomeIcon from "@mui/icons-material/Home";
+import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import HistoryIcon from "@mui/icons-material/History";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom";
+import AuthContext from "../contexts/AuthContext.js";
 
 const UserMenu = () => {
   const navigate = useNavigate();
+  const { logout } = useContext(AuthContext);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
-    <Drawer variant='permanent'>
+    <Drawer variant="permanent">
       <List>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate('/home')}>
+          <ListItemButton onClick={() => navigate("/home")}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary={'Home'} />
+            <ListItemText primary={"Home"} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate('/transactions')}>
+          <ListItemButton onClick={() => navigate("/transactions")}>
             <ListItemIcon>
               <AppRegistrationIcon />
             </ListItemIcon>
-            <ListItemText primary={'Registro de Transações'} />
+            <ListItemText primary={"Registro de Transações"} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => navigate('/history')}>
+          <ListItemButton onClick={() => navigate("/history")}>
             <ListItemIcon>
               <HistoryIcon />
             </ListItemIcon>
-            <ListItemText primary={'Histórico de Transações'} />
+            <ListItemText primary={"Histórico de Transações"} />
+          </ListItemButton>
+        </ListItem>
+
+        <Divider />
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => handleLogout()}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Sair"} />
           </ListItemButton>
         </ListItem>
       </List>

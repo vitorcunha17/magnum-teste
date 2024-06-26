@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import api from '../services/api';
+import React, { createContext, useState, useEffect } from "react";
+import api from "../services/api.js";
 
 const TransactionContext = createContext();
 
@@ -10,10 +10,10 @@ export const TransactionProvider = ({ children }) => {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      const response = await api.get('/transfers');
+      const response = await api.get("/transfers");
       setTransactions(response.data);
     } catch (error) {
-      console.error('Erro ao buscar transações:', error);
+      console.error("Erro ao buscar transações:", error);
     } finally {
       setLoading(false);
     }
@@ -27,11 +27,11 @@ export const TransactionProvider = ({ children }) => {
     setLoading(true);
 
     try {
-      const response = await api.post('/transfer', transaction);
+      const response = await api.post("/transfer", transaction);
       setTransactions([...transactions, response.data]);
-      alert('Transação realizada com sucesso!');
+      alert("Transação realizada com sucesso!");
     } catch (error) {
-      alert('Erro ao realizar a transação.');
+      alert("Erro ao realizar a transação.");
     } finally {
       setLoading(false);
     }

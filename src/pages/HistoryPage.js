@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import {
   Container,
   Table,
@@ -7,12 +7,12 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from '@mui/material';
-import TransactionContext from '../contexts/TransactionContext';
+} from "@mui/material";
+import TransactionContext from "../contexts/TransactionContext.js";
 
 const HistoryPage = () => {
   const { transactions, loading } = useContext(TransactionContext);
-console.log(loading)
+  console.log(loading);
   if (loading) {
     return <div>Carregando...</div>;
   }
@@ -36,11 +36,28 @@ console.log(loading)
           <TableBody>
             {transactions.map((transaction) => (
               <TableRow key={transaction.id}>
-                <TableCell>{transaction.transactionType}</TableCell> {/* Exemplo: TED ou PIX */}
-                <TableCell>{transaction.transactionType === 'TED' ? transaction.bank : ''}</TableCell>
-                <TableCell>{transaction.transactionType === 'TED' ? transaction.agency : ''}</TableCell>
-                <TableCell>{transaction.transactionType === 'TED' ? transaction.account : ''}</TableCell>
-                <TableCell>{transaction.transactionType === 'PIX' ? transaction.pixKey : ''}</TableCell>
+                <TableCell>{transaction.transactionType}</TableCell>{" "}
+                {/* Exemplo: TED ou PIX */}
+                <TableCell>
+                  {transaction.transactionType === "TED"
+                    ? transaction.bank
+                    : ""}
+                </TableCell>
+                <TableCell>
+                  {transaction.transactionType === "TED"
+                    ? transaction.agency
+                    : ""}
+                </TableCell>
+                <TableCell>
+                  {transaction.transactionType === "TED"
+                    ? transaction.account
+                    : ""}
+                </TableCell>
+                <TableCell>
+                  {transaction.transactionType === "PIX"
+                    ? transaction.pixKey
+                    : ""}
+                </TableCell>
                 <TableCell>{transaction.value}</TableCell>
                 <TableCell>{transaction.transferDate}</TableCell>
                 <TableCell>{transaction.description}</TableCell>

@@ -1,10 +1,10 @@
-import React from 'react';
-import App from './App';
-import { AuthProvider } from './contexts/AuthContext';
-import { TransactionProvider } from './contexts/TransactionContext';
-import { createRoot } from 'react-dom/client';
+import React from "react";
+import App from "./App.js";
+import { AuthProvider } from "./contexts/AuthContext.js";
+import { TransactionProvider } from "./contexts/TransactionContext.js";
+import { createRoot } from "react-dom/client";
 
-const root = createRoot(document.getElementById('root'));
+const root = createRoot(document.getElementById("root"));
 root.render(
   <AuthProvider>
     <TransactionProvider>

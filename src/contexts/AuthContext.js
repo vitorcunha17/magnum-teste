@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react';
-import api from '../services/api';
+import React, { createContext, useState } from "react";
+import api from "../services/api.js";
 
 const AuthContext = createContext();
 
@@ -10,23 +10,28 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const response = await api.post('/login', { email, password });
+      const response = await api.post("/login", { email, password });
       const { user, token } = response.data;
-      localStorage.setItem('token', token);
+      localStorage.setItem("token", token);
       api.defaults.headers.Authorization = `Bearer ${token}`;
       setUser(user);
     } catch (error) {
-      alert('Falha ao fazer login');
-      console.error('Erro ao fazer login:', error);
+      alert("Falha ao fazer login");
+      console.error("Erro ao fazer login:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('token');
-    api.defaults.headers.Authorization = undefined;
-    setUser(null);
+  const logout = async () => {
+    try {
+      await api.post("/logout");
+      localStorage.removeItem("token");
+      api.defaults.headers.Authorization = undefined;
+      setUser(null);
+    } catch (error) {
+      alert("Erro ao fazer logout:", error);
+    }
   };
 
   return (

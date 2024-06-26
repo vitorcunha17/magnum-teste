@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
+import { Typography } from "@mui/material";
 
 const HomePage = () => {
   return (
     <div>
-      <h1>Bem-vindo!</h1>
+      <Typography component="h1" variant="h5">
+        Bem-vindo!
+      </Typography>
     </div>
   );
-}
+};
 
 export default HomePage;
