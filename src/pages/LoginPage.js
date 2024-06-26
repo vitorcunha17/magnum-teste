@@ -9,11 +9,16 @@ const LoginPage = () => {
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    await login(email, password);
-    navigate("/home");
+    login(email, password)
+      .then(() => {
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.error("Erro ao fazer login:", error);
+      });
   };
 
   return (

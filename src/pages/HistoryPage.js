@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Container,
   Table,
@@ -11,8 +11,14 @@ import {
 import TransactionContext from "../contexts/TransactionContext.js";
 
 const HistoryPage = () => {
-  const { transactions, loading } = useContext(TransactionContext);
-  console.log(loading);
+  const { transactions, fetchTransactions, loading } =
+    useContext(TransactionContext);
+
+  useEffect(() => {
+    fetchTransactions();
+    // eslint-disable-next-line
+  }, []);
+
   if (loading) {
     return <div>Carregando...</div>;
   }
@@ -35,8 +41,8 @@ const HistoryPage = () => {
           </TableHead>
           <TableBody>
             {transactions.map((transaction) => (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.transactionType}</TableCell>{" "}
+              <TableRow key={transaction._id}>
+                <TableCell>{transaction.transactionType}</TableCell>
                 {/* Exemplo: TED ou PIX */}
                 <TableCell>
                   {transaction.transactionType === "TED"

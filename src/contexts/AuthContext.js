@@ -34,8 +34,24 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const register = async (email, password, confirmPassword) => {
+    if (password !== confirmPassword) {
+      alert("As senhas não coincidem!");
+      return Promise.reject(new Error("As senhas não coincidem!"));
+    }
+    try {
+      const response = await api.post("/register", { email, password });
+      if (response.status !== 200) {
+        throw new Error("Falha ao registrar");
+      }
+      alert("Registro bem-sucedido!");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, logout, register, loading }}>
       {children}
     </AuthContext.Provider>
   );

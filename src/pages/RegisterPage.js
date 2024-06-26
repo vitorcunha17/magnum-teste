@@ -1,35 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, TextField, Typography, Container, Box } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../services/api.js";
+import AuthContext from "../contexts/AuthContext.js";
 
 function RegisterPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    if (password !== confirmPassword) {
-      alert("As senhas não coincidem!");
-      return;
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-    try {
-      const response = await api.post("/register", { email, password });
-
-      if (response.status !== 200) {
-        throw new Error("Falha ao registrar");
-      }
-
-      const data = await response;
-      console.log(data);
-      alert("Registro bem-sucedido!");
-      navigate("/login");
-    } catch (error) {
-      alert(error.message);
-    }
+    register(email, password, confirmPassword)
+      .then(() => {
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Erro ao registrar:", error);
+      });
   };
 
   return (
