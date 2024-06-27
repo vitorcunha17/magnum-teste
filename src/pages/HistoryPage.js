@@ -182,6 +182,7 @@ const HistoryPage = () => {
           </TextField>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DatePicker
+              format="DD/MM/YYYY"
               label="Data Inicial"
               value={startDate}
               onChange={(newValue) => {
@@ -190,6 +191,7 @@ const HistoryPage = () => {
               renderInput={(params) => <TextField {...params} />}
             />
             <DatePicker
+              format="DD/MM/YYYY"
               label="Data Final"
               value={endDate}
               onChange={(newValue) => {

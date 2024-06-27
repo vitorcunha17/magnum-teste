@@ -10,12 +10,14 @@ import {
   Select,
   MenuItem,
   Button,
+  Box,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TransactionContext from "../contexts/TransactionContext.js";
 import { useNavigate } from "react-router-dom";
+import TransactionPassword from "../components/TransactionPassword.js";
 
 const TransactionScreen = () => {
   const navigate = useNavigate();
@@ -28,45 +30,120 @@ const TransactionScreen = () => {
   const [value, setValue] = useState("");
   const [transferDate, setTransferDate] = useState(null);
   const [description, setDescription] = useState("");
+  const [open, setOpen] = useState(false);
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({
+    transactionType: "",
+    bank: "",
+    agency: "",
+    account: "",
+    pixKey: "",
+    value: "",
+    transferDate: "",
+  });
 
-  const handleSubmit = (e) => {
-    let parsedValue = parseFloat(value);
-
-    const transactionData = {
-      transactionType,
-      pixKey,
-      bank,
-      agency,
-      account,
-      value: parsedValue,
-      transferDate,
-      description,
+  const validateForm = () => {
+    let tempErrors = {
+      transactionType: "",
+      bank: "",
+      agency: "",
+      account: "",
+      pixKey: "",
+      value: "",
+      transferDate: "",
     };
-    e.preventDefault();
+    let isValid = true;
 
-    addTransaction(transactionData)
-      .then(() => {
-        navigate("/history");
-      })
-      .catch((error) => {
-        console.error("Erro ao adicionar transação:", error);
-      });
+    if (!transactionType) {
+      tempErrors.transactionType = "Compo tipo obrigatório";
+      isValid = false;
+    }
+    if (transactionType === "TED") {
+      if (!bank) {
+        tempErrors.bank = "Compo banco obrigatório";
+        isValid = false;
+      }
+      if (!agency) {
+        tempErrors.agency = "Compo agencio obrigatório";
+        isValid = false;
+      }
+      if (!account) {
+        tempErrors.account = "Compo conta obrigatório";
+        isValid = false;
+      }
+    }
+    if (transactionType === "PIX") {
+      if (!pixKey) {
+        tempErrors.pixKey = "Compo chave obrigatório";
+        isValid = false;
+      }
+    }
+    if (!value || isNaN(value) || parseFloat(value) <= 0) {
+      tempErrors.value = "Campo valor obrigatório";
+      isValid = false;
+    }
+    if (!transferDate) {
+      tempErrors.transferDate = "Campo data obrigatório";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
+  };
+
+  const handleSubmit = () => {
+    if (validateForm()) {
+      if (password === "123456") {
+        let parsedValue = parseFloat(value);
+
+        const transactionData = {
+          transactionType,
+          pixKey,
+          bank,
+          agency,
+          account,
+          value: parsedValue,
+          transferDate,
+          description,
+        };
+
+        addTransaction(transactionData)
+          .then(() => {
+            navigate("/history");
+          })
+          .catch((error) => {
+            console.error("Erro ao adicionar transação:", error);
+          });
+      } else {
+        alert("Senha incorreta");
+      }
+    }
   };
 
   return (
     <Card sx={{ width: "80%" }}>
+      <TransactionPassword
+        open={open}
+        setOpen={setOpen}
+        password={password}
+        setPassword={setPassword}
+        handleSubmit={handleSubmit}
+      />
       <CardContent>
         <Container maxWidth="sm">
           <Typography variant="h4" gutterBottom>
             Registrar Transação
           </Typography>
-          <form onSubmit={handleSubmit}>
+          <Box component="form" sx={{ mt: 1 }}>
             <FormControl fullWidth margin="normal">
               <InputLabel>Tipo</InputLabel>
               <Select
                 value={transactionType}
                 label="Tipo"
                 onChange={(e) => setTransactionType(e.target.value)}
+                required
+                error={!!errors.transactionType}
+                helperText={errors.transactionType}
               >
                 <MenuItem value="TED">TED</MenuItem>
                 <MenuItem value="PIX">PIX</MenuItem>
@@ -81,6 +158,8 @@ const TransactionScreen = () => {
                   margin="normal"
                   fullWidth
                   required
+                  error={!!errors.bank}
+                  helperText={errors.bank}
                 />
                 <TextField
                   label="Agência"
@@ -89,6 +168,8 @@ const TransactionScreen = () => {
                   margin="normal"
                   fullWidth
                   required
+                  error={!!errors.agency}
+                  helperText={errors.agency}
                 />
                 <TextField
                   label="Conta"
@@ -97,6 +178,8 @@ const TransactionScreen = () => {
                   margin="normal"
                   fullWidth
                   required
+                  error={!!errors.account}
+                  helperText={errors.account}
                 />
               </>
             )}
@@ -108,6 +191,8 @@ const TransactionScreen = () => {
                 margin="normal"
                 fullWidth
                 required
+                error={!!errors.pixKey}
+                helperText={errors.pixKey}
               />
             )}
             <TextField
@@ -117,16 +202,21 @@ const TransactionScreen = () => {
               margin="normal"
               fullWidth
               required
+              error={!!errors.value}
+              helperText={errors.value}
             />
             <FormControl fullWidth margin="normal">
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
+                  format="DD/MM/YYYY"
                   label="Data da Transferência"
                   value={transferDate}
                   onChange={(newValue) => {
                     setTransferDate(newValue);
                   }}
                   required
+                  error={!!errors.transferDate}
+                  helperText={errors.transferDate}
                 />
               </LocalizationProvider>
             </FormControl>
@@ -139,10 +229,15 @@ const TransactionScreen = () => {
               multiline
               rows={4}
             />
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button
+              onClick={() => validateForm() && setOpen(true)}
+              variant="contained"
+              color="primary"
+              fullWidth
+            >
               Transferir
             </Button>
-          </form>
+          </Box>
         </Container>
       </CardContent>
     </Card>

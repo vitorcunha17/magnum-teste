@@ -6,19 +6,39 @@ import { Button, TextField, Typography, Container, Box } from "@mui/material";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({ email: "", password: "" });
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  const validateForm = () => {
+    let tempErrors = { email: "", password: "" };
+    let isValid = true;
+
+    if (!email) {
+      tempErrors.email = "E-mail obrigatório";
+      isValid = false;
+    }
+    if (!password) {
+      tempErrors.password = "Senha obrigatória";
+      isValid = false;
+    }
+
+    setErrors(tempErrors);
+    return isValid;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    login(email, password)
-      .then(() => {
-        navigate("/home");
-      })
-      .catch((error) => {
-        console.error("Erro ao fazer login:", error);
-      });
+    if (validateForm()) {
+      login(email, password)
+        .then(() => {
+          navigate("/home");
+        })
+        .catch((error) => {
+          console.error("Erro ao fazer login:", error);
+        });
+    }
   };
 
   return (
@@ -47,6 +67,8 @@ const LoginPage = () => {
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            error={!!errors.email}
+            helperText={errors.email}
           />
           <TextField
             variant="outlined"
@@ -60,6 +82,8 @@ const LoginPage = () => {
             autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            error={!!errors.password}
+            helperText={errors.password}
           />
           <Button
             type="submit"
