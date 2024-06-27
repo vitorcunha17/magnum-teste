@@ -13,6 +13,7 @@ import {
   TextField,
   MenuItem,
   Button,
+  TablePagination,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -29,6 +30,10 @@ const HistoryPage = () => {
   const [endDate, setEndDate] = useState(null);
   const [startValue, setStartValue] = useState("");
   const [endValue, setEndValue] = useState("");
+
+  // Estado para paginação
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   useEffect(() => {
     fetchTransactions();
@@ -106,6 +111,7 @@ const HistoryPage = () => {
     }
 
     setFilteredTransactions(result);
+    setPage(0); // Resetar para a primeira página após aplicar os filtros
   };
 
   const formatDate = (dateString) => {
@@ -122,6 +128,21 @@ const HistoryPage = () => {
     setEndDate(null);
     setStartValue("");
     setEndValue("");
+  };
+
+  // Calcular os itens da página atual
+  const currentItems = filteredTransactions.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
   };
 
   if (loading) {
@@ -192,7 +213,7 @@ const HistoryPage = () => {
           <Button onClick={clearFilters}>Limpar Filtros</Button>
         </Box>
       </FormControl>
-      {/* Renderização da tabela com `filteredTransactions` */}
+      {/* Renderização da tabela com `currentItems` */}
       <Paper>
         <Table>
           <TableHead>
@@ -208,29 +229,29 @@ const HistoryPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredTransactions.map((transaction) => (
+            {currentItems.map((transaction) => (
               <TableRow key={transaction._id}>
                 <TableCell>{transaction.transactionType}</TableCell>
                 {/* Exemplo: TED ou PIX */}
                 <TableCell>
                   {transaction.transactionType === "TED"
                     ? transaction.bank
-                    : ""}
+                    : "-"}
                 </TableCell>
                 <TableCell>
                   {transaction.transactionType === "TED"
                     ? transaction.agency
-                    : ""}
+                    : "-"}
                 </TableCell>
                 <TableCell>
                   {transaction.transactionType === "TED"
                     ? transaction.account
-                    : ""}
+                    : "-"}
                 </TableCell>
                 <TableCell>
                   {transaction.transactionType === "PIX"
                     ? transaction.pixKey
-                    : ""}
+                    : "-"}
                 </TableCell>
                 <TableCell>{transaction?.value?.$numberDecimal}</TableCell>
                 <TableCell>{formatDate(transaction.transferDate)}</TableCell>
@@ -239,6 +260,15 @@ const HistoryPage = () => {
             ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={filteredTransactions.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </Paper>
     </Container>
   );

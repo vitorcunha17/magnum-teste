@@ -17,14 +17,14 @@ const HomePage = () => {
   return (
     <div>
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item lg={6} xs={12}>
           <Typography component="h1" variant="h5" align="center">
             Bem-vindo!
             <br />
             {email}
           </Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item lg={6} xs={12}>
           <Card sx={{ width: 400 }}>
             <CardContent>
               <Typography
