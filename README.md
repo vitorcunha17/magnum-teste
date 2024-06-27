@@ -1,5 +1,16 @@
 # Magnum Teste
 
+## Observações
+
+Criei uma api Node com Express (https://github.com/vitorcunha17/magnum-teste-api/) para atender as necessidades do teste, a api esta conectada com um MongoDB, caso o avaliador
+queira usar uma conta populada, utilize as credenciais abaixo:
+
+- E-mail: vitor1@gmail.com
+- Senha: teste
+
+O avaliador também pode seguir o fluxo padrão e se cadastrar no app, que sua conta será inserido no Mongo.
+
+
 ## Descrição do Projeto
 
 Este projeto é uma aplicação web para gerenciamento financeiro, permitindo aos usuários realizar operações básicas como visualizar saldo, fazer transações (TED/PIX) e ver um histórico de transações. A aplicação foi desenvolvida utilizando React com Context API para gerenciamento de estado global.
