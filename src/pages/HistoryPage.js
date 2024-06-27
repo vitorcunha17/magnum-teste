@@ -20,7 +20,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import TransactionContext from "../contexts/TransactionContext.js";
 
-const HistoryPage = () => {
+const HistoryPage = ({ resume }) => {
   const { transactions, fetchTransactions, loading } =
     useContext(TransactionContext);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
@@ -30,10 +30,9 @@ const HistoryPage = () => {
   const [endDate, setEndDate] = useState(null);
   const [startValue, setStartValue] = useState("");
   const [endValue, setEndValue] = useState("");
-
-  // Estado para paginação
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  let today = new Date();
 
   useEffect(() => {
     fetchTransactions();
@@ -85,7 +84,6 @@ const HistoryPage = () => {
 
     // Filtro por período
     if (periodFilter) {
-      console.log("periodFilter", periodFilter);
       const endDate = new Date();
       let startDate = new Date();
       switch (periodFilter) {
@@ -110,8 +108,19 @@ const HistoryPage = () => {
       });
     }
 
+    if (resume) {
+      result = result.filter((transaction) => {
+        const transactionDate = new Date(transaction.transferDate);
+        return (
+          transactionDate.getDate() === today.getDate() &&
+          transactionDate.getMonth() === today.getMonth() &&
+          transactionDate.getFullYear() === today.getFullYear()
+        );
+      });
+    }
+
     setFilteredTransactions(result);
-    setPage(0); // Resetar para a primeira página após aplicar os filtros
+    setPage(0);
   };
 
   const formatDate = (dateString) => {
@@ -151,9 +160,10 @@ const HistoryPage = () => {
 
   return (
     <Container>
-      <Typography variant="h4" gutterBottom>
-        Histórico de Transações
+      <Typography variant="h5" gutterBottom>
+        {resume ? "Resumo das últimas transações" : "Histórico de Transações "}
       </Typography>
+
       <FormControl fullWidth margin="normal">
         <Box
           component="form"
@@ -168,38 +178,42 @@ const HistoryPage = () => {
             onChange={(e) => setTypeFilter(e.target.value)}
             fullWidth
           ></TextField>
-          <TextField
-            select
-            label="Período"
-            value={periodFilter}
-            onChange={(e) => setPeriodFilter(e.target.value)}
-            fullWidth
-          >
-            <MenuItem value="7">7 Dias</MenuItem>
-            <MenuItem value="15">15 Dias</MenuItem>
-            <MenuItem value="30">30 Dias</MenuItem>
-            <MenuItem value="90">90 Dias</MenuItem>
-          </TextField>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              format="DD/MM/YYYY"
-              label="Data Inicial"
-              value={startDate}
-              onChange={(newValue) => {
-                setStartDate(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-            <DatePicker
-              format="DD/MM/YYYY"
-              label="Data Final"
-              value={endDate}
-              onChange={(newValue) => {
-                setEndDate(newValue);
-              }}
-              renderInput={(params) => <TextField {...params} />}
-            />
-          </LocalizationProvider>
+          {!resume && (
+            <>
+              <TextField
+                select
+                label="Período"
+                value={periodFilter}
+                onChange={(e) => setPeriodFilter(e.target.value)}
+                fullWidth
+              >
+                <MenuItem value="7">7 Dias</MenuItem>
+                <MenuItem value="15">15 Dias</MenuItem>
+                <MenuItem value="30">30 Dias</MenuItem>
+                <MenuItem value="90">90 Dias</MenuItem>
+              </TextField>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  label="Data Inicial"
+                  value={startDate}
+                  onChange={(newValue) => {
+                    setStartDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <DatePicker
+                  format="DD/MM/YYYY"
+                  label="Data Final"
+                  value={endDate}
+                  onChange={(newValue) => {
+                    setEndDate(newValue);
+                  }}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </>
+          )}
           <TextField
             label="Valor Inicial"
             value={startValue}
@@ -212,6 +226,7 @@ const HistoryPage = () => {
             onChange={(e) => setEndValue(e.target.value)}
             fullWidth
           />
+          <br />
           <Button onClick={clearFilters}>Limpar Filtros</Button>
         </Box>
       </FormControl>

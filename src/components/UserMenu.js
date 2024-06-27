@@ -15,6 +15,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext.js";
+import Logo from "../images/logo.svg";
 
 const UserMenu = () => {
   const navigate = useNavigate();
@@ -27,6 +28,11 @@ const UserMenu = () => {
 
   return (
     <Card sx={{ height: "95vh" }}>
+      <br />
+      <center>
+        <img src={Logo} alt="Logo" width={200} />
+      </center>
+      <br />
       <List>
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/home")}>

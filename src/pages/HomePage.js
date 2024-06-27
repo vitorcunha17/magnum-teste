@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from "react";
-import { Typography, Card, CardContent, Grid } from "@mui/material";
+import { Typography, Card, CardContent, Grid, Divider } from "@mui/material";
 import UserContext from "../contexts/UserContext.js";
 import HistoryPage from "./HistoryPage.js";
 
@@ -18,14 +18,18 @@ const HomePage = () => {
     <div>
       <Grid container spacing={2}>
         <Grid item lg={6} xs={12}>
-          <Typography component="h1" variant="h5" align="center">
-            Bem-vindo!
-            <br />
-            {email}
-          </Typography>
+          <Card sx={{ width: 400, height: 122 }}>
+            <CardContent>
+              <Typography component="h1" variant="h5" align="center">
+                Bem-vindo!
+                <br />
+                {email}
+              </Typography>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item lg={6} xs={12}>
-          <Card sx={{ width: 400 }}>
+          <Card sx={{ width: 400, height: 122 }}>
             <CardContent>
               <Typography
                 align="center"
@@ -42,7 +46,10 @@ const HomePage = () => {
           </Card>
         </Grid>
         <Grid item xs={12}>
-          <HistoryPage />
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+          <HistoryPage resume={true} />
         </Grid>
       </Grid>
     </div>

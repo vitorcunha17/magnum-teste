@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import AuthContext from "../contexts/AuthContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, TextField, Typography, Container, Box } from "@mui/material";
+import Logo from "../images/logo.svg";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -51,9 +52,8 @@ const LoginPage = () => {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
+        <img src={Logo} alt="Logo" width={380} />
+        <br />
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             variant="outlined"

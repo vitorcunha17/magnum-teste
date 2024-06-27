@@ -130,7 +130,7 @@ const TransactionScreen = () => {
       />
       <CardContent>
         <Container maxWidth="sm">
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h5" gutterBottom>
             Registrar Transação
           </Typography>
           <Box component="form" sx={{ mt: 1 }}>

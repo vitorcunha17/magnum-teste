@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Button, TextField, Typography, Container, Box } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext.js";
+import Logo from "../images/logo.svg";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -60,9 +61,8 @@ const RegisterPage = () => {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
-          Register
-        </Typography>
+        <img src={Logo} alt="Logo" width={380} />
+        <br />
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
             variant="outlined"
