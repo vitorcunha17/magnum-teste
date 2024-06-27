@@ -40,9 +40,37 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const addTransactionPassword = async (transactionPassword, confirmPassword) => {
+    const token = localStorage.getItem("token");
+
+    if (transactionPassword !== confirmPassword) {
+      alert("As senhas não coincidem!");
+      return Promise.reject(new Error("As senhas não coincidem!"));
+    }
+    try {
+      const response = await api.post(
+        "/transaction-password",
+        { transactionPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status !== 200) {
+        throw new Error("Falha ao registrar");
+      }
+      alert("Senha de transação cadastrada com sucesso!");
+    } catch (error) {
+      alert(error.message);
+      return Promise.reject(new Error("Falha ao registrar"));
+    }
+  };
+
   return (
     <UserContext.Provider
-      value={{ fetchBalance, fetchUser, loading }}
+      value={{ fetchBalance, fetchUser, addTransactionPassword, loading }}
     >
       {children}
     </UserContext.Provider>

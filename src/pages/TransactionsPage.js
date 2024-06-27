@@ -93,30 +93,29 @@ const TransactionScreen = () => {
 
   const handleSubmit = () => {
     if (validateForm()) {
-      if (password === "123456") {
-        let parsedValue = parseFloat(value);
+      let parsedValue = parseFloat(value);
 
-        const transactionData = {
-          transactionType,
-          pixKey,
-          bank,
-          agency,
-          account,
-          value: parsedValue,
-          transferDate,
-          description,
-        };
+      const transactionData = {
+        transactionType,
+        pixKey,
+        bank,
+        agency,
+        account,
+        value: parsedValue,
+        transferDate,
+        description,
+        transactionPassword: password,
+      };
 
-        addTransaction(transactionData)
-          .then(() => {
-            navigate("/history");
-          })
-          .catch((error) => {
-            console.error("Erro ao adicionar transação:", error);
-          });
-      } else {
-        alert("Senha incorreta");
-      }
+      addTransaction(transactionData)
+        .then(() => {
+          navigate("/history");
+        })
+        .catch((error) => {
+          console.error("Erro ao adicionar transação:", error);
+        });
+    } else {
+      alert("Senha incorreta");
     }
   };
 

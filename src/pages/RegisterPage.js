@@ -24,7 +24,7 @@ const RegisterPage = () => {
       isValid = false;
     }
     if (!password) {
-      tempErrors.password = "Sennha obrigatória";
+      tempErrors.password = "Senha obrigatória";
       isValid = false;
     }
     if (!confirmPassword) {
@@ -70,7 +70,7 @@ const RegisterPage = () => {
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="E-mail"
             name="email"
             autoComplete="email"
             autoFocus
@@ -85,7 +85,7 @@ const RegisterPage = () => {
             required
             fullWidth
             name="password"
-            label="Password"
+            label="Senha"
             type="password"
             id="password"
             autoComplete="new-password"
@@ -100,7 +100,7 @@ const RegisterPage = () => {
             required
             fullWidth
             name="confirmPassword"
-            label="Confirm Password"
+            label="Confirmar Senha"
             type="password"
             id="confirmPassword"
             autoComplete="new-password"
@@ -115,7 +115,7 @@ const RegisterPage = () => {
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
           >
-            Register
+            Registrar
           </Button>
           <Link
             to="/login"

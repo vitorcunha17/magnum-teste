@@ -9,8 +9,8 @@ const HomePage = () => {
   const [email, setEmail] = useState();
 
   useEffect(() => {
-    fetchBalance().then((data) => setBalance(data.saldo));
-    fetchUser().then((data) => setEmail(data.email));
+    fetchBalance().then((data) => setBalance(data?.saldo));
+    fetchUser().then((data) => setEmail(data?.email));
     // eslint-disable-next-line
   }, [balance]);
 

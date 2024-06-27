@@ -13,6 +13,7 @@ const RegisterPage = lazy(() => import("../pages/RegisterPage.js"));
 const HomePage = lazy(() => import("../pages/HomePage.js"));
 const TransactionsPage = lazy(() => import("../pages/TransactionsPage.js"));
 const HistoryPage = lazy(() => import("../pages/HistoryPage.js"));
+const ProfilePage = lazy(() => import("../pages/ProfilePage.js"));
 
 const isAuthenticated = () => {
   return localStorage.getItem("token") ? true : false;
@@ -60,6 +61,14 @@ const AppRoutes = () => (
           element={
             <PrivateRoute>
               <HistoryPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <ProfilePage />
             </PrivateRoute>
           }
         />

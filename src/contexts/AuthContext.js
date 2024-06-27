@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       alert("Falha ao fazer login");
       console.error("Erro ao fazer login:", error);
+      return Promise.reject(new Error("Falha ao fazer login"));
     } finally {
       setLoading(false);
     }
@@ -47,6 +48,7 @@ export const AuthProvider = ({ children }) => {
       alert("Registro bem-sucedido!");
     } catch (error) {
       alert(error.message);
+      return Promise.reject(new Error("Falha ao registrar"));
     }
   };
 

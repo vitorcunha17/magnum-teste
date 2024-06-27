@@ -12,6 +12,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
 import HistoryIcon from "@mui/icons-material/History";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../contexts/AuthContext.js";
 
@@ -49,6 +50,14 @@ const UserMenu = () => {
               <HistoryIcon />
             </ListItemIcon>
             <ListItemText primary={"Histórico de Transações"} />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/profile")}>
+            <ListItemIcon>
+              <AccountCircle />
+            </ListItemIcon>
+            <ListItemText primary={"Configurações de Perfil"} />
           </ListItemButton>
         </ListItem>
 
