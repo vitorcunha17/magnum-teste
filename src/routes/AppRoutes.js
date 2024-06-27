@@ -20,16 +20,14 @@ const isAuthenticated = () => {
 
 const PrivateRoute = ({ children }) => {
   return isAuthenticated() ? (
-    <div>
-      <Grid container spacing={1}>
-        <Grid item xs={3}>
-          <UserMenu />
-        </Grid>
-        <Grid item xs={9}>
-          {children}
-        </Grid>
+    <Grid container columns={16} spacing={1}>
+      <Grid item xs={3}>
+        <UserMenu />
       </Grid>
-    </div>
+      <Grid item xs={13}>
+        <center>{children}</center>
+      </Grid>
+    </Grid>
   ) : (
     <Navigate to="/login" replace />
   );

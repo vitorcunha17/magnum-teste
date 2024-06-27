@@ -1,5 +1,7 @@
 import React, { useState, useContext } from "react";
 import {
+  Card,
+  CardContent,
   Container,
   TextField,
   Typography,
@@ -52,93 +54,98 @@ const TransactionScreen = () => {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Typography variant="h4" gutterBottom>
-        Registrar Transação
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <FormControl fullWidth margin="normal">
-          <InputLabel>Tipo</InputLabel>
-          <Select
-            value={transactionType}
-            label="Tipo"
-            onChange={(e) => setTransactionType(e.target.value)}
-          >
-            <MenuItem value="TED">TED</MenuItem>
-            <MenuItem value="PIX">PIX</MenuItem>
-          </Select>
-        </FormControl>
-        {transactionType === "TED" && (
-          <>
+    <Card sx={{ width: "80%" }}>
+      <CardContent>
+        <Container maxWidth="sm">
+          <Typography variant="h4" gutterBottom>
+            Registrar Transação
+          </Typography>
+          <form onSubmit={handleSubmit}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel>Tipo</InputLabel>
+              <Select
+                value={transactionType}
+                label="Tipo"
+                onChange={(e) => setTransactionType(e.target.value)}
+              >
+                <MenuItem value="TED">TED</MenuItem>
+                <MenuItem value="PIX">PIX</MenuItem>
+              </Select>
+            </FormControl>
+            {transactionType === "TED" && (
+              <>
+                <TextField
+                  label="Banco"
+                  value={bank}
+                  onChange={(e) => setBank(e.target.value)}
+                  margin="normal"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  label="Agência"
+                  value={agency}
+                  onChange={(e) => setAgency(e.target.value)}
+                  margin="normal"
+                  fullWidth
+                  required
+                />
+                <TextField
+                  label="Conta"
+                  value={account}
+                  onChange={(e) => setAccount(e.target.value)}
+                  margin="normal"
+                  fullWidth
+                  required
+                />
+              </>
+            )}
+            {transactionType === "PIX" && (
+              <TextField
+                label="Chave PIX"
+                value={pixKey}
+                onChange={(e) => setPixKey(e.target.value)}
+                margin="normal"
+                fullWidth
+                required
+              />
+            )}
             <TextField
-              label="Banco"
-              value={bank}
-              onChange={(e) => setBank(e.target.value)}
+              label="Valor"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
               margin="normal"
               fullWidth
               required
             />
+            <FormControl fullWidth margin="normal">
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Data da Transferência"
+                  value={transferDate}
+                  onChange={(newValue) => {
+                    setTransferDate(newValue);
+                  }}
+                  required
+                />
+              </LocalizationProvider>
+            </FormControl>
             <TextField
-              label="Agência"
-              value={agency}
-              onChange={(e) => setAgency(e.target.value)}
+              label="Descrição"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               margin="normal"
               fullWidth
-              required
+              multiline
+              rows={4}
             />
-            <TextField
-              label="Conta"
-              value={account}
-              onChange={(e) => setAccount(e.target.value)}
-              margin="normal"
-              fullWidth
-              required
-            />
-          </>
-        )}
-        {transactionType === "PIX" && (
-          <TextField
-            label="Chave PIX"
-            value={pixKey}
-            onChange={(e) => setPixKey(e.target.value)}
-            margin="normal"
-            fullWidth
-            required
-          />
-        )}
-        <TextField
-          label="Valor"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          margin="normal"
-          fullWidth
-          required
-        />
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DatePicker
-            label="Data da Transferência"
-            value={transferDate}
-            onChange={(newValue) => {
-              setTransferDate(newValue);
-            }}
-            required
-          />
-        </LocalizationProvider>
-
-        <TextField
-          label="Descrição"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          margin="normal"
-          fullWidth
-          multiline
-          rows={4}
-        />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Transferir
-        </Button>
-      </form>
-    </Container>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Transferir
+            </Button>
+          </form>
+        </Container>
+      </CardContent>
+    </Card>
   );
 };
 

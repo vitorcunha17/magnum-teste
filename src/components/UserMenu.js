@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import {
+  Card,
   Divider,
-  Drawer,
   List,
   ListItem,
   ListItemButton,
@@ -25,7 +25,7 @@ const UserMenu = () => {
   };
 
   return (
-    <Drawer variant="permanent">
+    <Card sx={{ height: "95vh" }}>
       <List>
         <ListItem disablePadding>
           <ListItemButton onClick={() => navigate("/home")}>
@@ -62,7 +62,7 @@ const UserMenu = () => {
           </ListItemButton>
         </ListItem>
       </List>
-    </Drawer>
+    </Card>
   );
 };
 
