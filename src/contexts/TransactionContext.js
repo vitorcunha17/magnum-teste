@@ -48,9 +48,38 @@ export const TransactionProvider = ({ children }) => {
     }
   };
 
+  const addDeposit = async (depositValue) => {
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem("token");
+      if (isNaN(depositValue.value) || depositValue.value <= 0) {
+        alert("Valor inválido!");
+        return Promise.reject(new Error("Valor inválido!"));
+      }
+      await api.post("/deposit", depositValue, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      alert("Depósito realizado com sucesso!");
+    } catch (error) {
+      alert("Erro ao realizar o depósito.");
+      return Promise.reject(new Error("Erro ao realizar o depósito."));
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <TransactionContext.Provider
-      value={{ transactions, addTransaction, fetchTransactions, loading }}
+      value={{
+        transactions,
+        addTransaction,
+        fetchTransactions,
+        addDeposit,
+        loading,
+      }}
     >
       {children}
     </TransactionContext.Provider>
